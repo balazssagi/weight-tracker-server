@@ -5,7 +5,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 
 const PORT = process.env.PORT || 5000;
-const SECRET = process.env.secret;
+const SECRET = process.env.SECRET;
 const MONGO_URI = process.env.MONGO_URI;
 
 if (SECRET === undefined || MONGO_URI === undefined) {

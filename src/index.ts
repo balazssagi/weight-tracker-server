@@ -34,16 +34,27 @@ app.get("/weights", async function(req, res) {
     res.json(weights);
   } catch (e) {
     console.error(e);
-    res.send(500);
+    res.sendStatus(500);
   }
 });
 
-app.post("/weights", function(req, res) {
-  const newWeight = {
-    date: new Date().toISOString(),
-    weight: req.body.weight
-  };
-  res.json(newWeight);
+app.post("/weights", async function(req, res) {
+  if (req.body.weight === undefined) {
+    res.sendStatus(400)
+    return
+  }
+  try {
+    const newWeight = new Weight({
+      date: new Date().toISOString(),
+      weight: req.body.weight
+    })
+    await newWeight.save()
+    res.json(newWeight);
+  }
+  catch(e) {
+    console.error(e)
+    e.sendStatus(500)
+  }
 });
 
 app.listen(PORT, function() {

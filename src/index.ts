@@ -28,8 +28,15 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true });
 
 app.get("/weights", async function(req, res) {
   try {
+    const year = parseInt(req.query.year)
+
+    if (Number.isNaN(year)) {
+      res.sendStatus(400)
+      return
+    }
+
     const weights = await Weight.find({
-      date: { $gt: new Date(2019, 0, 1) }
+      date: { $gte: new Date(year, 0, 1), $lt: new Date(year + 1, 0, 1) }
     }).sort("-date");
     res.json(weights);
   } catch (e) {
